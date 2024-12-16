@@ -1,0 +1,52 @@
+.category-management {
+    font-family: Arial, sans-serif;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .categories-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .categories-table th, .categories-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .categories-table th {
+    background-color: #007bff;
+  }
+  
+  .pagination {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .pagination button {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .pagination button.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+
+  .addcategory label{
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block; /* Make label a block element for spacing */
+    color: #555;
+    margin-top: 10px;
+  }
+

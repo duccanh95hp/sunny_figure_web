@@ -1,0 +1,64 @@
+.admin-dashboard {
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.main-content {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.menu-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-item:hover {
+  background-color: #e0e0e0;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 1;
+  min-width: 150px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-content div:hover {
+  background-color: #e0e0e0;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
