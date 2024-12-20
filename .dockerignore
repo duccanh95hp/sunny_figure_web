@@ -1,0 +1,35 @@
+# Bỏ qua thư mục node_modules (đã được cài đặt trong container)
+node_modules
+
+# Bỏ qua các file build cũ (sẽ được tạo lại)
+build
+
+# Bỏ qua file lock của package manager không cần thiết (tuỳ trường hợp)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Bỏ qua các file hệ thống và IDE
+.DS_Store
+.env
+.idea
+.vscode
+*.swp
+*.swo
+
+# Bỏ qua file tạm hoặc cache
+.tmp/
+.cache/
+
+# Bỏ qua các file liên quan đến Git
+.git
+.gitignore
+
+# Bỏ qua file log
+*.log
+
+# Bỏ qua thư mục test hoặc file mock (nếu không cần trong Docker container)
+__tests__/
+__mocks__/
+
+
