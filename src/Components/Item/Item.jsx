@@ -10,7 +10,7 @@ const Item = (props) => {
             <p>{props.name}</p>
             <div className="item-price">
                 <div className="item-price-new">
-                    {format.formatMoney(props.new_price) } VNĐ
+                    {format.formatMoney(props.new_price)  } VNĐ
                 </div>
                 <div className="item-price-old">
                     {format.formatMoney(props.old_price) } VNĐ

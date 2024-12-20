@@ -32,7 +32,7 @@ const ProductDisplay = (props) => {
                     <p>(122)</p>
                 </div>
                 <div className="productdisplay-right-prices">
-                    <div className="productdisplay-right-price-old">{format.formatMoney(product.price)} VNĐ</div>
+                    <div className="productdisplay-right-price-old">{format.formatMoney(product.originalPrice)} VNĐ</div>
                     <div className="productdisplay-right-price-new">{format.formatMoney(product.price)} VNĐ</div>
                 </div>
 

@@ -8,6 +8,7 @@ import * as request from '../utils/request.js'
 import './CSS/UserProfile.css';
 import * as format from '../utils/format.js'
 import moment from "moment";
+import { size } from 'lodash';
 
 const { Option } = Select;
 
@@ -19,9 +20,7 @@ const UserProfile = () => {
     const [searchFilters, setSearchFilters] = useState({
         fromDate: null,
         toDate: null,
-        status: null,
-        size: 10,
-        page: 1
+        status: null
     });
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -40,6 +39,8 @@ const UserProfile = () => {
                     telephone: userData.data.telephone,
                     address: userData.data.address,
                     birthday: moment(userData.data.birthday, "DD-MM-YYYY"),
+                    affiliateCode: userData.data.affiliateCode,
+                    affiliateAmount: format.formatMoney(userData.data.affiliateAmount) + " VNĐ"
                 });
             } catch (error) {
                 console.error("Failed to fetch user profile:", error);
@@ -49,7 +50,14 @@ const UserProfile = () => {
 
         // Gọi API lấy danh sách đơn hàng
         const fetchOrders = async () => {
-            const payLoad = searchFilters
+            const payLoad = {
+                size: 99999,
+                page: 1,
+                fromDate: searchFilters.fromDate,
+                toDate: searchFilters.toDate,
+                status: searchFilters.status
+            }
+            
             try {
                 const orderData = await request.post('/order/all', payLoad);
                 setOrders(orderData.data.result);
@@ -84,9 +92,7 @@ const UserProfile = () => {
         const payLoad = {
             fromDate: fromDate || null,
             toDate: toDate || null,
-            status: status || null,
-            size: 10, // Hoặc lấy từ searchFilters nếu có
-            page: 1, // Hoặc lấy từ searchFilters nếu có
+            status: status || null
         };
     
         // Gọi fetchOrders với payload mới
@@ -202,7 +208,7 @@ const UserProfile = () => {
                 style={{ maxWidth: "600px" }}
             >
                 <Form.Item
-                    label="Name"
+                    label="Tên"
                     name="username"
                 >
                     <Input readOnly />
@@ -216,7 +222,7 @@ const UserProfile = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Phone"
+                    label="Điện thoại"
                     name="telephone"
                     rules={[
                         { required: true, message: "Phone is required" },
@@ -227,7 +233,7 @@ const UserProfile = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Address"
+                    label="Địa chỉ"
                     name="address"
                     rules={[{ required: true, message: "Address is required" }]}
                 >
@@ -235,7 +241,7 @@ const UserProfile = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Date of Birth"
+                    label="Ngày sinh"
                     name="birthday"
                     rules={[{ required: true, message: "Date of Birth is required" }]}
                 >
@@ -245,11 +251,26 @@ const UserProfile = () => {
                     />
                 </Form.Item>
 
+                <Form.Item
+                    label="Mã giới thiệu"
+                    name="affiliateCode"
+                >
+                    <Input readOnly />
+                </Form.Item>
+                <Form.Item
+                    label="Tiền hoa hồng"
+                    name="affiliateAmount"
+                >
+                    <Input readOnly />
+                </Form.Item>
+                <div className='note_affiliate'>Khi lớn hơn 100,000 VNĐ có thể liên hệ Admin qua Sđt/zalo: 0795345097 để nhận tiền hoa hồng </div>
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Save Changes
                     </Button>
                 </Form.Item>
+               
             </Form>
             ) : (
                 <p>Loading user information...</p>
@@ -299,7 +320,7 @@ const UserProfile = () => {
                             </Select>
                         </Form.Item>
                     </Col>
-                    <Col span={3}>
+                    {/* <Col span={3}>
                         <Form.Item label="Size">
                             <Input
                                 name="size"
@@ -318,7 +339,7 @@ const UserProfile = () => {
                                 value={searchFilters.page}
                             />
                         </Form.Item>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <Button onClick={handleSearch} type="primary" htmlType="submit" icon={<SearchOutlined />}>
                     Search
@@ -329,7 +350,7 @@ const UserProfile = () => {
                 dataSource={orders}
                 rowKey="id"
                 pagination={{
-                    pageSize: searchFilters.size || 10, // Số lượng hiển thị mỗi trang
+                    pageSize: 10, // Số lượng hiển thị mỗi trang
                     total: orders.length, // Tổng số mục (thay bằng tổng từ API nếu có)
                     onChange: (page, pageSize) => {
                         setSearchFilters((prev) => ({
@@ -377,7 +398,7 @@ const UserProfile = () => {
                                         </td>
                                         <td>{order.nameProduct}</td>
                                         <td>{order.quantity}</td>
-                                        <td>${order.price}</td>
+                                        <td>{format.formatMoney(order.price)} VNĐ</td>
                                     </tr>
                                 ))}
                             </tbody>

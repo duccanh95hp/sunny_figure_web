@@ -37,7 +37,7 @@ const NewCollections = () => {
             <hr />
             <div className="collections">
                 {dataProduct.map((item,i) => {
-                    return <Item key={i} id={item.id} name={item.name} image={item.avatarUrl} new_price={item.price} old_price={item.price} />
+                    return <Item key={i} id={item.id} name={item.name} image={item.avatarUrl} new_price={item.price} old_price={item.originalPrice} />
                 })}
             </div>
         </div>

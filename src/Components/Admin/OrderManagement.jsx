@@ -121,8 +121,8 @@ const handleOpenModal = (order) => {
       toast.success("Cập nhật thành công")
       
     } catch (error) {
-      console.error('Failed to update status', error);
-      toast.error("Cập nhật thất bại")
+     
+      toast.error(error.response.data.message)
     }
   };
  
@@ -181,7 +181,7 @@ const handleOpenModal = (order) => {
             <th>Phone</th>
             <th>Địa chỉ giao</th>
             <th>Tổng tiền</th>
-            <th>Ngày giao</th>
+            <th>Ngày thanh toán</th>
             <th>Trạng thái</th>
             <th>Ngày tạo</th>
             <th>Action</th>
@@ -196,7 +196,7 @@ const handleOpenModal = (order) => {
               <td>{order.phone}</td>
               <td>{order.deliveryAddress}</td>
               <td>{format.formatMoney(order.totalPrice)} VNĐ</td>
-              <td>{format.formatDate(order.deliveryDate)}</td>
+              <td>{format.formatDate(order.paymentTime)}</td>
               <td >
                 {/* {order.status} */}
                 <button onClick={() => handleOpenModal(order)}>{order.status}</button>

@@ -14,6 +14,7 @@ const CartItems = () => {
 
     const [savedAddresses, setSavedAddresses] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState('');
+    const [affiliateCode, setAffiliateCode] = useState('');
 
     const [deliveryInformation, setDeliveryInformation] = useState({
         telephone: '',
@@ -64,7 +65,9 @@ const CartItems = () => {
             [name]: value
         });
     };
-
+    const ChangeAffiliateCode = (event) => {
+        setAffiliateCode(event.target.value);
+    }
     const handleCheckout = async () => {
         // Validate dữ liệu (ví dụ)
         console.log("delivery", deliveryInformation)
@@ -87,16 +90,22 @@ const CartItems = () => {
                 const payload = {
                     paymentMethod: "chuyển khoản",
                     deliveryInformation: deliveryInformation,
-                    orderDetailEntities: product
+                    orderDetailEntities: product,
+                    affiliateCode: affiliateCode
                 };
                 const response = await request.post('order', payload); // Gọi phương thức POST từ request.js với payload
-                if(response.code)
-                setDataOrder(response.data.result); // Lưu dữ liệu trả về vào state
-                clearCart();
-                toast.success("Thanh toán thành công! Cảm ơn bạn đã đặt hàng.");
+                if(response.code === 200){
+                    setDataOrder(response.data.result); // Lưu dữ liệu trả về vào state
+                    clearCart();
+                    toast.success("Đặt hàng thành công! Cảm ơn quý khách");
+                    toast.success("Thanh toán khi giao hàng !")
+                } else {
+                    toast.error(response.message)
+                }
+               
             } catch (err) {
                 setError('Error fetching data');
-                console.error(err);
+                toast.error(err.response.data.message);
             } finally {
                 setLoading(false); // Tắt trạng thái loading sau khi gọi API xong
             }
@@ -212,27 +221,29 @@ const CartItems = () => {
                     <h1>Cart Totals</h1>
                     <div>
                         <div className="cartitems-total-item">
-                            <p>Tổng tiền</p>
+                            <p>Tiền hàng</p>
                             <p>{format.formatMoney(getTotalCartAmount())} VNĐ</p>
                         </div>
                         <hr />
                         <div className="cartitems-total-item">
                             <p>Phí ship</p>
-                            <p>Free</p>
+                            <p>Được tính theo đơn vị vận chuyển</p>
                         </div>
                         <hr />
                         <div className="cartitems-total-item">
-                            <h3>Total</h3>
+                            <h3>Total <span style={{fontSize: 12}}>(chưa bao gồm ship)</span></h3>
                             <h3>{format.formatMoney(getTotalCartAmount())} VNĐ</h3>
                         </div>
                     </div>
-                    <button type="button" onClick={handleCheckout}>Thanh toán</button>
+                    <button type="button" onClick={handleCheckout}>Đặt hàng</button>
                 </div>
                 <div className="cartitems-promocode">
-                    <p>Nhập mã khuyến mãi</p>
+                    <p>Nhập mã giới thiệu</p>
                     <div className="cartitems-promobox">
-                        <input type="text" placeholder='Mã code' />
-                        <button>Submit</button>
+                        <input type="text" 
+                            placeholder='Code'
+                            value={affiliateCode} 
+                            onChange={ChangeAffiliateCode} />
                     </div>
                 </div>
                 

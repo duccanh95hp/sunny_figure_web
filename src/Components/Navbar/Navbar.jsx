@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react"
+import React, { useContext, useRef, useState, useEffect } from "react"
 import './Navbar.css'
 import logo from '../Assets/sunny_figure.jpg';
 import cart_icon from '../Assets/cart_icon.png'
@@ -13,6 +13,7 @@ import avatar_icon from "../Assets/avatar_2.png"
 const Navbar = () => {
     const [menu, setMenu] = useState("shop")
     const {getTotalCartItem} = useContext(ShopContext)
+    const [categories, setCategories] = useState([]);
     const menuRef = useRef()
     // State để theo dõi trạng thái đăng nhập
     const { isLoggedIn, logout } = useAuth();
@@ -21,7 +22,6 @@ const Navbar = () => {
         menuRef.current.classList.toggle('nav-menu-visible');
         e.target.classList.toggle('open');
     }
-   
     // Hàm xử lý logout
 
     return (
