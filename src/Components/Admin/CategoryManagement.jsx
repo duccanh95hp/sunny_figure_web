@@ -17,14 +17,15 @@ const CategoryManagement = () => {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [filters, setFilters] = useState({ name: "" });
+  const [filters, setFilters] = useState({ name: null, status: null });
   const [currentPage, setCurrentPage] = useState(1);
+  const [status, setStatus] = useState("ACTIVE");
   const pageSize = 5;
 
  useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await request.get('/category'); // Gọi phương thức POST từ request.js với payload
+                const response = await request.post('/category/all', filters); // Gọi phương thức POST từ request.js với payload
                 setCategories(response.data); // Lưu dữ liệu trả về vào state
             } catch (err) {
                 setError('Error fetching data');
@@ -34,8 +35,8 @@ const CategoryManagement = () => {
             }
         };
         fetchData();
-    }, []); // [] có nghĩa là chỉ gọi API một lần khi component được mount
-
+    }, [filters]); // [] có nghĩa là chỉ gọi API một lần khi component được mount
+  
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
@@ -69,21 +70,23 @@ const CategoryManagement = () => {
    const handleSaveCategory = async () => {
     if (isEditMode) {
       // Edit logic
-      setCategories((prevCategories) =>
-        prevCategories.map((cat) =>
-          cat.id === categoryId
-            ? { ...cat, name: categoryName, description }
-            : cat
-        )
-      );
+      
       const updateCategory = {
         name: categoryName,
         description: description,
+        status: status
       };
       const fetchData = async () => {
         try {
             await request.put(`/category/${categoryId}`,updateCategory); // Gọi phương thức POST từ request.js với payload
             toast.success("Cập nhật thành công")
+            setCategories((prevCategories) =>
+              prevCategories.map((cat) =>
+                cat.id === categoryId
+                  ? { ...cat, name: categoryName, status }
+                  : cat
+              )
+            );
         } catch (err) {
             setError('Error fetching data');
             toast.error("Cập nhật thất bại")
@@ -120,28 +123,6 @@ const CategoryManagement = () => {
     setCategoryName("");
     setDescription("");
   };
-
-  // const handleDeleteCategory = (id) => {
-  //   if (window.confirm("Are you sure you want to delete this category?")) {
-      
-  //     const fetchData = async () => {
-  //       try {
-  //           await request.del(`/category/${id}`); // Gọi phương thức POST từ request.js với payload
-  //       } catch (err) {
-  //           setError('Error fetching data');
-  //           console.error(err);
-  //       } finally {
-  //           setLoading(false); // Tắt trạng thái loading sau khi gọi API xong
-  //       }
-  //     };
-
-  //     fetchData();
-  //     setCategories((prevCategories) =>
-  //       prevCategories.filter((category) => category.id !== id)
-  //     );
-  //   }
-  // };
-
 const handleDeleteCategory = (id) => {
   toast.info(
     <div>
@@ -193,17 +174,17 @@ const confirmDelete = async (id) => {
 };
 
 
-  const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(filters.name.toLowerCase())
-  );
+  // const filteredCategories = categories.filter((category) =>
+  //   category.name.toLowerCase().includes(filters.name.toLowerCase())
+  // );
 
-  const paginatedCategories = filteredCategories.slice(
+  const paginatedCategories = categories.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
 
 
-  const totalPages = Math.ceil(filteredCategories.length / pageSize);
+  const totalPages = Math.ceil(categories.length / pageSize);
 
   return (
     <div className="category-management">
@@ -213,7 +194,7 @@ const confirmDelete = async (id) => {
       <button onClick={handleAddNewCategory}>Thêm mới danh mục</button>
 
       {/* Filter */}
-      <div className="filters">
+      <div className="search-section">
         <input
           type="text"
           name="name"
@@ -229,6 +210,7 @@ const confirmDelete = async (id) => {
           <tr>
             <th>STT</th>
             <th>Tên Danh mục</th>
+            <th>Trạng thái</th>
             <th>Mô tả</th>
             <th>Actions</th>
           </tr>
@@ -238,6 +220,7 @@ const confirmDelete = async (id) => {
             <tr key={category.id}>
               <td>{(currentPage - 1) * pageSize + index + 1}</td>
               <td>{category.name}</td>
+              <td>{category.status}</td>
               <td>{category.description}</td>
               <td>
                 <button onClick={() => handleEditCategory(category.id)}>Edit</button>
@@ -285,6 +268,20 @@ const confirmDelete = async (id) => {
                   onChange={(e) => setCategoryName(e.target.value)}
                   style={{ width: "100%", marginBottom: "10px" }}
                 />
+              </label>
+            </div>
+            <div>
+              <label>
+                Trạng thái:
+                <select
+                  name="status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  style={{ width: "100%", marginBottom: "10px" }}
+                >
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="INACTIVE">INACTIVE</option>
+                </select>
               </label>
             </div>
             <div>

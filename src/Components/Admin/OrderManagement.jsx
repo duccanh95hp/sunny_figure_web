@@ -8,22 +8,26 @@ import * as format from "../../utils/format"
 
 // You can use a simple modal or a library like Ant Design for the modal
 import { Modal } from "antd"; // If you want to use Ant Design's Modal component
+import { size } from "lodash";
 
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]); // Order data
+  const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchCriteria, setSearchCriteria] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    status: "",
-    createdAt: "",
+    orderCode: null,
+    name: null,
+    email: null,
+    phone: null,
+    status: null,
+    fromDate: null,
+    toDate: null,
+    page: 1,
+    size: 10
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [editingOrder, setEditingOrder] = useState(null); // Order being edited
-  const itemsPerPage = 10;
   const [viewingOrder, setViewingOrder] = useState(null); // Order being viewed
-
-  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false); // Trạng thái mở modal
   const [updateOrder, setUpdateOrder] = useState(null); // Đơn hàng đang được chỉnh sửa
@@ -37,32 +41,51 @@ const handleOpenModal = (order) => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const payload = { size: 999999, page: 1 };
-      const response = await request.post('/order/all', payload);
-      setOrders(response.data.result);
+      try {
+        searchCriteria.page = currentPage;
+        const response = await request.post('/order/all', searchCriteria);
+        setOrders(response.data.result);
+        setTotalPages(response.data.totalPages)
+        setLoading(false);
+      } catch (err) {
+        setOrders([]);
+      } finally {
+
+      }
     };
     fetchOrders();
-  }, []);
+  }, [searchCriteria, currentPage]);
+  if (loading) return <p>Loading...</p>;
 
-  const filteredOrders = orders
-    .filter((order) => {
-      const { name, email, phone, status, createdAt } = searchCriteria;
-      const matchesName = name ? order.name.toLowerCase().includes(name.toLowerCase()) : true;
-      const matchesEmail = email ? order.email.toLowerCase().includes(email.toLowerCase()) : true;
-      const matchesPhone = phone ? order.phone.includes(phone) : true;
-      const matchesStatus = status ? order.status.toLowerCase() === status.toLowerCase() : true;
-      const matchesCreatedAt = createdAt ? order.createdAt.startsWith(createdAt) : true;
-      return matchesName && matchesEmail && matchesPhone && matchesStatus && matchesCreatedAt;
-    })
-    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-  const totalPages = Math.ceil(orders.length / itemsPerPage);
+  // const totalPages = Math.ceil(orders.length / itemsPerPage);
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
-    setSearchCriteria((prev) => ({ ...prev, [name]: value }));
-    setCurrentPage(1);
+      setSearchCriteria((prev) => ({ ...prev, [name]: value }));
+      setCurrentPage(1);
+    };
+    const handleDateSearchChange = (event) => {
+      const { name, value } = event.target;
+
+    if (value) {
+      // Chuyển đổi sang dd/MM/yyyy để gửi đi
+      const [year, month, day] = value.split("-");
+      const formattedDate = `${day}/${month}/${year}`;
+
+      setSearchCriteria((prevState) => ({
+        ...prevState,
+        [`${name}Display`]: value, // Lưu giá trị để hiển thị (yyyy-MM-dd)
+        [name]: formattedDate,     // Lưu giá trị để gửi đi (dd/MM/yyyy)
+      }));
+    } else {
+      setSearchCriteria((prevState) => ({
+        ...prevState,
+        [`${name}Display`]: value,
+        [name]: value,
+      }));
+    }
   };
+  
 
   const handleEditOrder = (order) => {
     setEditingOrder(order);
@@ -136,6 +159,13 @@ const handleOpenModal = (order) => {
         <div className="search-fields">
           <input
             type="text"
+            name="orderCode"
+            placeholder="Mã đơn"
+            value={searchCriteria.orderCode}
+            onChange={handleSearchChange}
+          />
+          <input
+            type="text"
             name="name"
             placeholder="Tên khách hàng"
             value={searchCriteria.name}
@@ -163,10 +193,18 @@ const handleOpenModal = (order) => {
             <option value="CANCELED">CANCELED</option>
           </select>
           <input
+            placeholder="Từ ngày"
             type="date"
-            name="createdAt"
-            value={searchCriteria.createdAt}
-            onChange={handleSearchChange}
+            name="fromDate"
+            value={searchCriteria.fromDateDisplay || ""}
+            onChange={handleDateSearchChange}
+          />
+          <input
+            placeholder="Đến ngày"
+            type="date"
+            name="toDate"
+            value={searchCriteria.toDateDisplay || ""}
+            onChange={handleDateSearchChange}
           />
         </div>
       </div>
@@ -188,7 +226,7 @@ const handleOpenModal = (order) => {
           </tr>
         </thead>
         <tbody>
-          {filteredOrders.map((order) => (
+          {orders.map((order) => (
             <tr key={order.id}>
               <td>{order.orderCode}</td>
               <td>{order.name}</td>

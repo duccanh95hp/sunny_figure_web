@@ -24,7 +24,6 @@ export const get = async(path, option = {}) => {
 export const post = async (path, data, option = {}) => {
     const finalOption = addAuthorizationHeader(option); // Thêm Authorization header
     const response = await request.post(path, data, finalOption); // truyền data vào
-    console.log("response", data)
     return response.data;
 };
 

@@ -70,12 +70,10 @@ const CartItems = () => {
     }
     const handleCheckout = async () => {
         // Validate dữ liệu (ví dụ)
-        console.log("delivery", deliveryInformation)
         if ((!deliveryInformation.name || !deliveryInformation.telephone || !deliveryInformation.address)) {
             toast.error("Hãy điền đầy đủ thông tin giao hàng");
             return;
         }
-        console.log("product", product)
         if(product.length <= 0) {
             toast.error("Bạn chưa mua hàng");
             return;

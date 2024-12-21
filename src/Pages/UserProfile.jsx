@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Table, Input, Select, Button, Form, Row, Col, Modal, DatePicker } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { toast } from 'react-toastify';
@@ -8,7 +8,6 @@ import * as request from '../utils/request.js'
 import './CSS/UserProfile.css';
 import * as format from '../utils/format.js'
 import moment from "moment";
-import { size } from 'lodash';
 
 const { Option } = Select;
 
@@ -16,14 +15,16 @@ const UserProfile = () => {
     const [user, setUser] = useState(null);
     const [form] = Form.useForm();
     const [orders, setOrders] = useState([]);
-    const [filteredOrders, setFilteredOrders] = useState([]);
     const [searchFilters, setSearchFilters] = useState({
         fromDate: null,
         toDate: null,
-        status: null
+        status: null,
+        orderCode: null
     });
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [page, setPage] = useState(1);
+    const size = 12;
 
 
     useEffect(() => {
@@ -31,7 +32,6 @@ const UserProfile = () => {
         const fetchUserProfile = async () => {
             try {
                 const userData = await request.get('/api/auth/detail');
-                console.log("user",userData)
                 setUser(userData);
                 form.setFieldsValue({
                     username: userData.data.username,
@@ -46,29 +46,12 @@ const UserProfile = () => {
                 console.error("Failed to fetch user profile:", error);
             }
         };
-        
-
-        // Gọi API lấy danh sách đơn hàng
-        const fetchOrders = async () => {
-            const payLoad = {
-                size: 99999,
-                page: 1,
-                fromDate: searchFilters.fromDate,
-                toDate: searchFilters.toDate,
-                status: searchFilters.status
-            }
-            
-            try {
-                const orderData = await request.post('/order/all', payLoad);
-                setOrders(orderData.data.result);
-            } catch (error) {
-                console.error("Failed to fetch orders:", error);
-            }
-        };
-
         fetchUserProfile();
-        fetchOrders();
     }, []);
+    useEffect(() => {
+        fetchOrders();
+    }, [searchFilters]);
+
     const handleFormSubmit = async (values) => {
         try {
             const payload = {
@@ -84,24 +67,18 @@ const UserProfile = () => {
             toast.error('Cập nhật thất bại')
         }
     };
-
-    const handleSearch = () => {
-        const { fromDate, toDate, status } = searchFilters;
     
-        // Thiết lập payload từ searchFilters
-        const payLoad = {
-            fromDate: fromDate || null,
-            toDate: toDate || null,
-            status: status || null
-        };
-    
-        // Gọi fetchOrders với payload mới
-        fetchOrders(payLoad);
-    };
-    
-    const fetchOrders = async (payLoad) => {
+    const fetchOrders = useCallback(async () => {
         try {
-            const orderData = await request.post('/order/all', payLoad);
+            const payload = {
+                page,
+                size,
+                status: searchFilters.status || null,
+                fromDate: searchFilters.fromDate || null,
+                toDate: searchFilters.toDate || null,
+                orderCode: searchFilters.orderCode || null
+            };
+            const orderData = await request.post('/order/all', payload);
             if (orderData && orderData.data && orderData.data.result) {
                 setOrders(orderData.data.result); // Cập nhật state với dữ liệu API
             } else {
@@ -109,15 +86,23 @@ const UserProfile = () => {
             }
         } catch (error) {
             console.error("Failed to fetch orders:", error);
+            toast.error(error.response.data.message)
             setOrders([]);
         }
-    };
+    });
     
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setSearchFilters((prev) => ({ ...prev, [name]: value }));
     };
+    const handleDateChange = (date, dateString, fieldName) => {
+        setSearchFilters((prevFilters) => ({
+            ...prevFilters,
+            [fieldName]: dateString, // Cập nhật giá trị ngày dưới dạng chuỗi "dd/MM/yyyy"
+        }));
+    };
+    
 
     const handleSelectChange = (value) => {
         setSearchFilters((prev) => ({ ...prev, status: value }));
@@ -129,8 +114,6 @@ const UserProfile = () => {
                 
                 const response = await request.get(`order/${order.id}`); // Gọi phương thức get từ request.js với payload
                 setSelectedOrder(response);
-                console.log("selectedOrder",selectedOrder)
-               
             } catch (err) {
                 
                 console.error(err);
@@ -199,7 +182,7 @@ const UserProfile = () => {
 
     return (
         <div className="user-profile">
-            <h1>Thông tin User</h1>
+            <h1>Thông tin</h1>
             {user ? (
                 <Form
                 form={form}
@@ -263,7 +246,7 @@ const UserProfile = () => {
                 >
                     <Input readOnly />
                 </Form.Item>
-                <div className='note_affiliate'>Khi lớn hơn 100,000 VNĐ có thể liên hệ Admin qua Sđt/zalo: 0795345097 để nhận tiền hoa hồng </div>
+                <div className='note_affiliate'>Được quy đổi ra tiền mặt</div>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
@@ -284,66 +267,54 @@ const UserProfile = () => {
                 style={{ marginBottom: 20 }}
             >
                 <Row gutter={16}>
+                    <Col span={6}>
+                        <Form.Item label="Mã đơn">
+                            <Input
+                                name="orderCode"
+                                placeholder="Mã đơn"
+                                onChange={handleInputChange}
+                                value={searchFilters.orderCode}
+                            />
+                        </Form.Item>
+                    </Col>
                     
-                    <Col span={3}>
-                        <Form.Item label="From">
-                            <Input
-                                name="from"
-                                placeholder="Enter starting location"
-                                onChange={handleInputChange}
-                                value={searchFilters.fromDate}
+                    <Col span={6}>
+                        <Form.Item label="Từ ngày">
+                            <DatePicker
+                                format="DD/MM/YYYY" // Hiển thị ngày tháng theo định dạng dd/MM/yyyy
+                                placeholder="Chọn ngày"
+                                onChange={(date, dateString) => handleDateChange(date, dateString, 'fromDate')}
+                                value={searchFilters.fromDate ? moment(searchFilters.fromDate, "DD/MM/YYYY") : null} // Đặt giá trị mặc định nếu có
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={3}>
-                        <Form.Item label="To">
-                            <Input
-                                name="to"
-                                placeholder="Enter destination"
-                                onChange={handleInputChange}
-                                value={searchFilters.toDate}
+                    <Col span={6}>
+                        <Form.Item label="Đến ngày">
+                            <DatePicker
+                                format="DD/MM/YYYY" // Hiển thị ngày tháng theo định dạng dd/MM/yyyy
+                                placeholder="Chọn ngày"
+                                onChange={(date, dateString) => handleDateChange(date, dateString, 'toDate')}
+                                value={searchFilters.toDate ? moment(searchFilters.toDate, "DD/MM/YYYY") : null} // Đặt giá trị mặc định nếu có
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={3}>
+                    <Col span={6}>
                         <Form.Item label="Status">
                             <Select
-                                placeholder="Select status"
+                                placeholder="Chọn trạng thái"
                                 onChange={handleSelectChange}
                                 value={searchFilters.status}
                                 allowClear
                             >
-                                <Option value="COMP">Completed</Option>
+                                <Option value="COMPLETED">Completed</Option>
                                 <Option value="PROCESS">Processing</Option>
                                 <Option value="CANCEL">Cancelled</Option>
                                 <Option value="NEW">New</Option>
                             </Select>
                         </Form.Item>
                     </Col>
-                    {/* <Col span={3}>
-                        <Form.Item label="Size">
-                            <Input
-                                name="size"
-                                placeholder="Enter destination"
-                                onChange={handleInputChange}
-                                value={searchFilters.size}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={3}>
-                        <Form.Item label="Page">
-                            <Input
-                                name="page"
-                                placeholder="Enter destination"
-                                onChange={handleInputChange}
-                                value={searchFilters.page}
-                            />
-                        </Form.Item>
-                    </Col> */}
                 </Row>
-                <Button onClick={handleSearch} type="primary" htmlType="submit" icon={<SearchOutlined />}>
-                    Search
-                </Button>
+                
             </Form>
             <Table
                 columns={columns}

@@ -12,9 +12,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
   try {
     const decodedToken = jwtDecode(token); // Decode JWT để lấy thông tin user
-    console.log("tocken", decodedToken)
     const userRole = decodedToken.sub; // Thay "role" bằng key role của bạn trong payload
-    console.log("userRole", userRole)
 
     if (!allowedRoles.includes(userRole)) {
       // Chuyển hướng nếu role không được phép

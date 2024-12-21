@@ -18,11 +18,11 @@ const ShopCategory = (props) => {
   });
 
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(12);
+  const size = 12;
 
   useEffect(() => {
     fetchProducts();
-  }, [filters, page, props.category, size]);
+  }, [filters, page, props.category]);
 
   // Gọi API để lấy danh sách sản phẩm
   const fetchProducts = useCallback(async () => {
@@ -46,7 +46,7 @@ const ShopCategory = (props) => {
     } finally {
       setLoading(false);
     }
-  }, [filters, page, size, props.category]);
+  }, [filters, page, props.category]);
 
   // Debounce để giảm tần suất gọi API
   // const debouncedFetch = useCallback(
@@ -74,7 +74,6 @@ const ShopCategory = (props) => {
   const handleFilterSubmit = () => {
     // debouncedFetch();
   };
-  console.log("banner", props.banner);
 //   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
   return (
@@ -95,7 +94,7 @@ const ShopCategory = (props) => {
               name={item.name}
               image={item.avatarUrl}
               new_price={item.price}
-              old_price={item.price}
+              old_price={item.originalPrice}
             />
           );
         })}

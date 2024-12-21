@@ -57,8 +57,6 @@ const LoginSignup = () => {
                     toast.error(`${response.message}`);
                 }
             } else{
-                console.log("name", name)
-                console.log("password", password)
                 if (!name || !password) {
                     toast.warning('All fields are required.');
                     return;

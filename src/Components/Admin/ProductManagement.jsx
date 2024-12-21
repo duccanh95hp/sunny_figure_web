@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import './ProductManagement.css'
 import * as request from "../../utils/request";
-import { size } from "lodash";
 import * as format from "../../utils/format"
 
 const ProductManagement = () => {
@@ -16,16 +15,18 @@ const ProductManagement = () => {
   const [error, setError] = useState(null);
   const [products, setProducts] = useState(null);
   const [categories, setCategories] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [searchCriteria, setSearchCriteria] = useState({
     name: "",
-    category: "",
+    categoryName: "",
     minPrice: "",
     maxPrice: "",
+    page: currentPage,
+    size: 10
   });
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  
 
   const [productData, setProductData] = useState({
     avatarUrl: "",
@@ -40,46 +41,48 @@ const ProductManagement = () => {
     createdAt: "",
     categoryId: 0,
   });
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseCat = await request.post('/category/all',{name: null, status: null}); // Gọi phương thức POST từ request.js với payload
+        setCategories(responseCat.data); // Lưu dữ liệu trả về vào state
+      } catch (err) {
+          setError('Error fetching data');
+          console.error(err);
+      } finally {
+          
+      }
+    };
+    fetchData();
+  },[]);
   
 
   useEffect(() => {
           const fetchData = async () => {
               try {
-                  const payLoad = {
-                    page: 1,
-                    size: 9999
-                  }
-                  const response = await request.post('/product', payLoad); // Gọi phương thức POST từ request.js với payload
+                  searchCriteria.page = currentPage;
+                  const response = await request.post('/product', searchCriteria); // Gọi phương thức POST từ request.js với payload
                   setProducts(response.data.result); // Lưu dữ liệu trả về vào state
+                  setTotalPages(response.data.totalPages)
 
-                  const responseCat = await request.get('/category'); // Gọi phương thức POST từ request.js với payload
-                  setCategories(responseCat.data); // Lưu dữ liệu trả về vào state
+                  // const responseCat = await request.post('/category/all',{name: null, status: null}); // Gọi phương thức POST từ request.js với payload
+                  // setCategories(responseCat.data); // Lưu dữ liệu trả về vào state
               } catch (err) {
                   setError('Error fetching data');
+                  setProducts([]);
                   console.error(err);
               } finally {
                   setLoading(false); // Tắt trạng thái loading sau khi gọi API xong
               }
           };
           fetchData();
-      }, []); // [] có nghĩa là chỉ gọi API một lần khi component được mount
+      }, [searchCriteria, currentPage]); // [] có nghĩa là chỉ gọi API một lần khi component được mount
   
       if (loading) return <p>Loading...</p>;
-      if (error) return <p>{error}</p>;
+      // if (error) return <p>{error}</p>;
 
-  const filteredProducts = products
-    .filter((product) => {
-      const { name, category, minPrice, maxPrice } = searchCriteria;
-      const matchesName = name ? product.name.toLowerCase().includes(name.toLowerCase()) : true;
-      const matchesCategory = category ? product.category.name.toLowerCase().includes(category.toLowerCase()) : true;
-      const matchesMinPrice = minPrice ? product.price >= Number(minPrice) : true;
-      const matchesMaxPrice = maxPrice ? product.price <= Number(maxPrice) : true;
-      return matchesName && matchesCategory && matchesMinPrice && matchesMaxPrice;
-    })
-    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  
+  // const totalPages = Math.ceil(products.length / itemsPerPage);
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
@@ -271,9 +274,9 @@ const ProductManagement = () => {
         />
         <input
           type="text"
-          name="category"
+          name="categoryName"
           placeholder="Tên Danh mục"
-          value={searchCriteria.category.name}
+          value={searchCriteria.categoryName}
           onChange={handleSearchChange}
         />
         <input
@@ -310,7 +313,7 @@ const ProductManagement = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredProducts.map((product) => (
+          {products.map((product) => (
             <tr key={product.id}>
               <td>
                 <img src={product.avatarUrl} alt={product.name} width="50" />
