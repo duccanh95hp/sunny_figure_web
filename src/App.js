@@ -4,18 +4,18 @@ import { ToastContainer } from 'react-toastify';
 import Navbar from './Components/Navbar/Navbar';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Shop from './Pages/Shop';
-import ShopCategory from './Pages/ShopCategory';
 import Product from './Pages/Product';
 import Cart from './Pages/Cart';
 import LoginSignup from './Pages/LoginSignup';
 import UserProfile from './Pages/UserProfile';
 import Footer from './Components/Footer/Footer';
-import onepiece_banner from './Components/Assets/banner_onepiece.png';
-import naruto_banner from './Components/Assets/naruto_banner.png';
-import dragon_banner from './Components/Assets/dragon_ball_banner.png';
 import ProtectedRoute from './utils/ProtectedRoute';
 import Unauthorized from './Components/Unauthorized';
-
+import ProductPage from './Pages/ProductPage';
+import AboutPage from './Pages/AboutPage';
+import PolicyPage from './Pages/PolicyPage';
+import ContactPage from './Pages/ContactPage';
+import SunnyWebsitePage from './Pages/SunnyWebsitePage';
 
 import AdminLayout from './Components/Admin/AdminLayout';
 import NotFound from './Components/NotFound';
@@ -43,9 +43,12 @@ function App() {
         {/* <Navbar /> */}
         <Routes>
           <Route path='/' element={<Shop />}></Route>
-          <Route path='/one-piece' element={<ShopCategory banner={onepiece_banner} category="1"/>}></Route>
-          <Route path='/naruto' element={<ShopCategory banner={naruto_banner} category="3"/>}></Route>
-          <Route path='/dragon-ball' element={<ShopCategory banner={dragon_banner} category="2"/>}></Route>
+          <Route path='/san-pham' element={<ProductPage />}></Route>
+          <Route path='/gioi-thieu' element={<AboutPage />}></Route>
+          <Route path='/chinh-sach' element={<PolicyPage />}></Route>
+          <Route path='/lien-he' element={<ContactPage />}></Route>
+          <Route path='/sunny-website' element={<SunnyWebsitePage />}></Route>
+
           <Route path='/product' element={<Product />}>
             <Route path=':productId' element={<Product />}/>
           </Route>

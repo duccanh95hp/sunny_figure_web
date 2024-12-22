@@ -1,23 +1,27 @@
 import React from "react";
-import './Item.css'
+import "./Item.css";
 import { Link } from "react-router-dom";
-import * as format from '../../utils/format' 
+import * as format from "../../utils/format";
 
 const Item = (props) => {
-    return (
-        <div className='item'>
-           <Link to={`/product/${props.id}`}><img onClick={window.scrollTo(0,0)} src={props.image} alt="" /></Link>
-            <p>{props.name}</p>
-            <div className="item-price">
-                <div className="item-price-new">
-                    {format.formatMoney(props.new_price)  } VNĐ
-                </div>
-                <div className="item-price-old">
-                    {format.formatMoney(props.old_price) } VNĐ
-                </div>
-            </div>
-        </div>
-    )
-}
+  return (
+    <div className="product-page-product-item item">
+      <Link to={`/product/${props.id}`}>
+        <img
+          src={props.avatarUrl}
+          alt={props.name}
+          className="product-page-product-image"
+        />{" "}
+      </Link>
+      <h4 className="product-page-product-name">{props.name}</h4>
+      <p className="product-page-product-price-old">
+        Giá gốc: <span>{format.formatMoney(props.originalPrice)}₫</span>
+      </p>
+      <p className="product-page-product-price-new">
+        Giá khuyến mại: <span>{format.formatMoney(props.price)}₫</span>
+      </p>
+    </div>
+  );
+};
 
-export default Item
+export default Item;

@@ -1,0 +1,125 @@
+/* Tổng thể */
+.contact-page {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.8;
+    background-color: #f9f9f9;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 50px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Tiêu đề */
+  .contact-page-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #ff9800;
+    margin-bottom: 10px;
+  }
+  
+  .contact-page-subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  .highlight {
+    font-weight: bold;
+    color: #ff9800;
+  }
+  
+  /* Nội dung */
+  .contact-page-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* Thông tin liên hệ */
+  .contact-info {
+    flex: 1;
+    min-width: 300px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-info h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .contact-info p {
+    margin: 10px 0;
+    color: #555;
+  }
+  
+  /* Biểu mẫu liên hệ */
+  .contact-form {
+    flex: 1;
+    min-width: 300px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-form h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .form-group textarea {
+    resize: none;
+    height: 100px;
+  }
+  
+  .contact-form-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ff9800;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .contact-form-button:hover {
+    background: #e68a00;
+  }
+  
+  /* Success message */
+  .success-message {
+    font-size: 16px;
+    color: green;
+    text-align: center;
+  }
+  

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import './Footer.css'
 import footer_logo from '../Assets/sunny_figure.jpg'
 import instagram_icon from '../Assets/instagram_icon.png'
@@ -12,11 +13,11 @@ const Footer = () => {
                 <p>SUNNY FIGURE</p>
             </div>
             <ul className="footer-links">
-                <li>Company</li>
-                <li>Products</li>
-                <li>Offices</li>
-                <li>About</li>
-                <li>Contact</li>
+                
+                <Link to="/san-pham"><li>Products</li></Link>
+                <Link to="/chinh-sach"><li>Policy</li></Link>
+                <Link to="/gioi-thieu"><li>About</li></Link>
+                <Link to="/lien-he"><li>Contact</li></Link>
             </ul>
             <div className="footer-social-icon">
                 <div className="footer-icons-container">
