@@ -24,6 +24,9 @@ const SunnyWebsitePage = () => {
           onClick={() => toggleSection("salePolicy")}
         >
           Lợi ích của website bán hàng
+          <span className="dropdown-icon">
+            {activeSection === "salePolicy" ? " ▲" : " ▼"}
+          </span>
         </h2>
         <AnimatePresence>
           {activeSection === "salePolicy" && (
@@ -61,6 +64,9 @@ const SunnyWebsitePage = () => {
           onClick={() => toggleSection("warrantyPolicy")}
         >
           Lý Do Chọn Sunny Website
+          <span className="dropdown-icon">
+            {activeSection === "warrantyPolicy" ? " ▲" : " ▼"}
+          </span>
         </h2>
         <AnimatePresence>
           {activeSection === "warrantyPolicy" && (
@@ -99,6 +105,9 @@ const SunnyWebsitePage = () => {
           onClick={() => toggleSection("partnerPolicy")}
         >
           Cam Kết Của Sunny Website
+          <span className="dropdown-icon">
+            {activeSection === "partnerPolicy" ? " ▲" : " ▼"}
+          </span>
         </h2>
         <AnimatePresence>
           {activeSection === "partnerPolicy" && (

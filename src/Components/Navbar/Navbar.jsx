@@ -24,10 +24,12 @@ const Navbar = () => {
 
     return (
         <div className="navbar">
+            <Link to='/'>
             <div className="nav-logo">
                 <img src={logo} alt="" />
                 <p>Sunny Figure</p>
             </div>
+            </Link>
             <img className="nav-drowdown" onClick={drowdown_toggle} src={nav_drowdown} alt="" />
             <ul ref={menuRef} className="nav-menu">
                 <li onClick={() =>{setMenu("shop")}}><Link style={{ textDecoration: "none"}} to='/'>Shop</Link>{menu==="shop"?<hr/>:<></>}</li>

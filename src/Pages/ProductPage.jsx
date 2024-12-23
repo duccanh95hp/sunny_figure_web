@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import "./CSS/ProductPage.css"
-import * as request from "../utils/request"
-import * as format from "../utils/format"
+import "./CSS/ProductPage.css";
+import * as request from "../utils/request";
+import * as format from "../utils/format";
 
 // Component duy nhất
 const ProductPage = () => {
@@ -20,11 +20,38 @@ const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
 
+  const [priceToOptions, setPriceToOptions] = useState([
+    "100000",
+    "200000",
+    "500000",
+    "1000000",
+    "1500000",
+    "2000000",
+  ]);
+  const updatePriceToOptions = (selectedPriceFrom) => {
+    const allPriceToOptions = [
+      "100000",
+      "200000",
+      "500000",
+      "1000000",
+      "1500000",
+      "2000000",
+    ];
+  
+    const updatedOptions = allPriceToOptions.filter(
+      (price) => Number(price) >= Number(selectedPriceFrom)
+    );
+  
+    setPriceToOptions(updatedOptions);
+  };
   // Lấy danh mục sản phẩm
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await request.post('/category/all', {name: null, status: "ACTIVE"});
-      
+      const response = await request.post("/category/all", {
+        name: null,
+        status: "ACTIVE",
+      });
+
       setCategories(response.data);
     };
 
@@ -34,16 +61,15 @@ const ProductPage = () => {
   // Lấy danh sách sản phẩm
   useEffect(() => {
     const fetchProducts = async () => {
-    try{
-        const response = await request.post('/product', filters);
+      try {
+        const response = await request.post("/product", filters);
         setProducts(response.data.result);
         setTotal(response.data.totalPages);
-    } catch (err){
-        console.log(err)
+      } catch (err) {
+        console.log(err);
         setProducts([]);
         setTotal(1);
-    }
-     
+      }
     };
 
     fetchProducts();
@@ -91,44 +117,68 @@ const ProductPage = () => {
         </div>
         <div>
           <label>Giá từ:</label>
-          <input
-            type="number"
+          <select
             name="priceFrom"
             value={filters.priceFrom}
-            onChange={handleFilterChange}
-          />
+            onChange={(e) => {
+              handleFilterChange(e);
+              updatePriceToOptions(e.target.value); // Cập nhật "Giá đến"
+            }}
+          >
+            <option value="0">0</option>
+            <option value="100000">100,000</option>
+            <option value="200000">200,000</option>
+            <option value="500000">500,000</option>
+            <option value="1000000">1,000,000</option>
+            <option value="1500000">1,500,000</option>
+          </select>
         </div>
+
         <div>
           <label>Đến:</label>
-          <input
-            type="number"
+          <select
             name="priceTo"
             value={filters.priceTo}
             onChange={handleFilterChange}
-          />
+          >
+            <option value="">Không giới hạn</option> {/* Giá trị mặc định */}
+            {priceToOptions.map((price) => (
+              <option key={price} value={price}>
+                {format.formatMoney(price).toLocaleString()}
+              </option>
+            ))}
+          </select>
         </div>
+
         <button onClick={() => setFilters({ ...filters, page: 1 })}>
           Tìm kiếm
         </button>
       </div>
-  
+
       {/* Danh sách sản phẩm */}
       <div className="product-page-product-section">
         <h3>Danh sách sản phẩm</h3>
         <div className="product-page-product-grid">
-            {products.map((product) => (
-                <div key={product.id} className="product-page-product-item">
-                    <Link to={`/product/${product.id}`}><img src={product.avatarUrl} alt={product.name} className="product-page-product-image" /> </Link>
-                    <h4 className="product-page-product-name">{product.name}</h4>
-                    <p className="product-page-product-price-old">
-                    Giá gốc: <span>{format.formatMoney(product.originalPrice)}₫</span>
-                    </p>
-                    <p className="product-page-product-price-new">
-                    Giá khuyến mại: <span>{format.formatMoney(product.price)}₫</span>
-                    </p>
-                </div>
-           
-            ))}
+          {products.map((product) => (
+            <div key={product.id} className="product-page-product-item">
+              <Link to={`/product/${product.id}`}>
+                <img
+                  src={product.avatarUrl}
+                  alt={product.name}
+                  className="product-page-product-image"
+                />
+                <h4 className="product-page-product-name">{product.name}</h4>
+                <p className="product-page-product-price-old">
+                  Giá gốc:{" "}
+                  <span>{format.formatMoney(product.originalPrice)}₫</span>
+                </p>
+                <p className="product-page-product-price-new">
+                  Giá khuyến mại:{" "}
+                  <span>{format.formatMoney(product.price)}₫</span>
+                </p>
+              </Link>
+            </div>
+          ))}
         </div>
         <div className="product-page-pagination">
           <button
@@ -150,7 +200,6 @@ const ProductPage = () => {
       </div>
     </div>
   );
-  
 };
 
 export default ProductPage;

@@ -63,7 +63,7 @@ const ProductDisplay = (props) => {
                    <span>Số lượng :</span> {product.stockQuantity}
                 </div>
                 
-                <button onClick={()=>{addToCart(product)}}>ADD TO CART</button>
+                <button className="button-add-to-cart" onClick={()=>{addToCart(product)}}>Thêm vào giỏ</button>
                 
             </div>
         </div>

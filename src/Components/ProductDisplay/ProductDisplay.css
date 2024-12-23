@@ -68,7 +68,7 @@
     border-radius: 3px;
     cursor: pointer;
 }
-.productdisplay-right button{
+/* .productdisplay-right button{
     padding: 20px 40px;
     width: 200px;
     font-size: 16px;
@@ -79,7 +79,7 @@
     border: none;
     outline: none;
     cursor: pointer;
-}
+} */
 .productdisplay-right-category{
     margin-top: 10px;
 }
@@ -92,6 +92,52 @@
 .productdisplay-right-description span{
     font-weight: 600;
 }
+
+.button-add-to-cart {
+    background: linear-gradient(45deg, #ff6f61, #ffa69e); /* Gradient màu nổi bật */
+    color: white;
+    font-size: 14px; /* Giảm kích thước font */
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding: 10px 0px; /* Giảm padding để nút nhỏ hơn */
+    border: none;
+    border-radius: 8px; /* Bo góc mềm mại */
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Đổ bóng nhẹ */
+    position: relative;
+    overflow: hidden; /* Ẩn hiệu ứng ngoài */
+    transition: all 0.3s ease-in-out;
+    max-width: 150px;
+    margin-top: 20px;
+  }
+  
+  .button-add-to-cart:before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    transform: scale(0);
+    transition: transform 0.5s ease;
+  }
+  
+  .button-add-to-cart:hover:before {
+    transform: scale(1);
+  }
+  
+  .button-add-to-cart:hover {
+    transform: scale(1.03); /* Phóng to nhẹ khi hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn */
+  }
+  
+  .button-add-to-cart:active {
+    transform: scale(0.92); /* Hiệu ứng lún xuống */
+  }
+  
+  
+  
 @media(max-width:1280px){
     .productdisplay{
         margin: 0px 60px;

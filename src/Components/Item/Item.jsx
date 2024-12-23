@@ -12,7 +12,7 @@ const Item = (props) => {
           alt={props.name}
           className="product-page-product-image"
         />{" "}
-      </Link>
+     
       <h4 className="product-page-product-name">{props.name}</h4>
       <p className="product-page-product-price-old">
         Giá gốc: <span>{format.formatMoney(props.originalPrice)}₫</span>
@@ -20,6 +20,7 @@ const Item = (props) => {
       <p className="product-page-product-price-new">
         Giá khuyến mại: <span>{format.formatMoney(props.price)}₫</span>
       </p>
+      </Link>
     </div>
   );
 };
