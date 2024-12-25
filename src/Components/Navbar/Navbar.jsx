@@ -5,7 +5,7 @@ import './Navbar.css'
 import logo from '../Assets/sunny_figure.jpg';
 import cart_icon from '../Assets/cart_icon.png'
 import { ShopContext } from "../../Context/ShopContext";
-import nav_drowdown from '../Assets/dropdown_icon.png'
+import nav_drowdown from '../Assets/dropdown.png'
 import { useAuth } from "../../Context/AuthContext";
 import avatar_icon from "../Assets/avatar_2.png"
 

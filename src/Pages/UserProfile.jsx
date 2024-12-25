@@ -40,13 +40,11 @@ const UserProfile = () => {
     // Gọi API lấy thông tin người dùng
     const fetchUserProfile = async () => {
       try {
-        
-
         const userData = await request.get("/api/auth/detail");
         setUser(userData);
-        const birthday = userData.data.birthday 
-            ? moment(userData.data.birthday, "DD-MM-YYYY") 
-            : null; // Nếu không có ngày sinh, gán giá trị null
+        const birthday = userData.data.birthday
+          ? moment(userData.data.birthday, "DD/MM/YYYY")
+          : null; // Nếu không có ngày sinh, gán giá trị null
         form.setFieldsValue({
           username: userData.data.username,
           email: userData.data.email,
@@ -103,7 +101,7 @@ const UserProfile = () => {
       toast.error(error.response.data.message);
       setOrders([]);
     }
-  });
+  }, [page, searchFilters]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -230,7 +228,13 @@ const UserProfile = () => {
             name="birthday"
             rules={[{ required: true, message: "Date of Birth is required" }]}
           >
-            <DatePicker format="DD/MM/YYYY" style={{ width: "100%" }} />
+            <DatePicker
+              format="DD/MM/YYYY"
+              // value={moment("11/11/2024")}
+
+              style={{ width: "100%" }}
+              // value={form.getFieldsValue("birthday")}
+            />
           </Form.Item>
 
           <Form.Item label="Mã giới thiệu" name="affiliateCode">

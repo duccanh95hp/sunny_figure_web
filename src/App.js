@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Shop from './Pages/Shop';
 import Product from './Pages/Product';
 import Cart from './Pages/Cart';
-import LoginSignup from './Pages/LoginSignup';
 import UserProfile from './Pages/UserProfile';
 import Footer from './Components/Footer/Footer';
 import ProtectedRoute from './utils/ProtectedRoute';
@@ -19,6 +18,8 @@ import SunnyWebsitePage from './Pages/SunnyWebsitePage';
 
 import AdminLayout from './Components/Admin/AdminLayout';
 import NotFound from './Components/NotFound';
+import Register from './Components/Login/Register';
+import Login from './Components/Login/Login'
 
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
@@ -48,16 +49,14 @@ function App() {
           <Route path='/chinh-sach' element={<PolicyPage />}></Route>
           <Route path='/lien-he' element={<ContactPage />}></Route>
           <Route path='/sunny-website' element={<SunnyWebsitePage />}></Route>
+          <Route path='/register' element={<Register />}></Route>
 
           <Route path='/product' element={<Product />}>
             <Route path=':productId' element={<Product />}/>
           </Route>
           <Route path='/cart' element={<Cart />}></Route>
-          <Route path='/login' element={<LoginSignup />}></Route>
+          <Route path='/login' element={<Login />}></Route>
           <Route path='/profile' element={<UserProfile />}></Route>
-
-
-          
           <Route
             path="/admin/*"
             element={

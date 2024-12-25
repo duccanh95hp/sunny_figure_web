@@ -1,0 +1,105 @@
+
+/* Container Styling */
+.register-container {
+  /* background: white; */
+  border-radius: 12px;
+  padding: 40px;
+  width: 400px;
+  margin: 50px auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+}
+
+/* Title */
+.register-title {
+  font-size: 28px;
+  font-weight: bold;
+  color:  #e85d04;
+  margin-bottom: 10px;
+}
+
+/* Description */
+.register-description {
+  color:#6d6875;
+  margin-bottom: 30px;
+}
+
+/* Form Control */
+.register-form {
+  margin-bottom: 20px;
+}
+
+.register-form-control {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.register-form-control input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border 0.3s;
+}
+
+.register-form-control input:focus {
+  border-color: #e85d04;
+  outline: none;
+}
+
+.register-form-control label {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0 5px;
+  color: #7f8c8d;
+  font-size: 14px;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.register-form-control input:focus + label,
+.register-form-control input:not(:placeholder-shown) + label {
+  top: -10px;
+  font-size: 12px;
+  color: #e85d04;
+}
+
+/* Submit Button */
+.register-submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #e85d04;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.register-submit-btn:hover {
+  background: #d56024;
+}
+
+/* Footer */
+.register-footer {
+  margin-top: 20px;
+  color: #6d6875;
+  font-size: 14px;
+}
+
+.register-login-link {
+  color:  #e85d04;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-login-link:hover {
+  text-decoration: underline;
+}
