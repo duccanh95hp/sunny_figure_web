@@ -32,7 +32,7 @@ const Register = () => {
         email: email,
         password: password,
       };
-      const response = await request.post("/api/auth/signup", payload);
+      const response = await request.post("/auth/signup", payload);
 
       if (response.code === 200) {
         toast.success(response.message);

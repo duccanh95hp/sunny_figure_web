@@ -34,7 +34,7 @@ const Login = () => {
         username: name,
         password: password,
       };
-      const response = await request.post("/api/auth/signin", payLoad);
+      const response = await request.post("/auth/signin", payLoad);
 
       if (response.code === 200) {
         const token = response.data.accessToken;

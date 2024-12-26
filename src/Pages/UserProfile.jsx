@@ -40,7 +40,7 @@ const UserProfile = () => {
     // Gọi API lấy thông tin người dùng
     const fetchUserProfile = async () => {
       try {
-        const userData = await request.get("/api/auth/detail");
+        const userData = await request.get("/auth/detail");
         setUser(userData);
         const birthday = userData.data.birthday
           ? moment(userData.data.birthday, "DD/MM/YYYY")
@@ -72,7 +72,7 @@ const UserProfile = () => {
         address: values.address,
         birthday: values.birthday.format("YYYY-MM-DD"), // Chuyển ngày sinh về định dạng cần lưu trữ
       };
-      await request.post("/api/auth/update", payload);
+      await request.post("/auth/update", payload);
       toast.success("Cập nhật thành công");
     } catch (error) {
       console.error("Failed to update profile:", error);
