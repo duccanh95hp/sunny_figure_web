@@ -96,6 +96,7 @@ const ProductManagement = () => {
       file: null,
       name: "",
       price: "",
+      originalPrice: "",
       nameCategory: "",
       stockQuantity: "",
       manufacturer: "",
@@ -103,7 +104,8 @@ const ProductManagement = () => {
       weight: "",
       box: "",
       categoryId: null,
-      accessory: ""
+      accessory: "",
+      description: ""
     });
     setIsModalOpen(true);
   };
@@ -176,6 +178,7 @@ const ProductManagement = () => {
       if (productData.file) formData.append("file", productData.file);
       formData.append("name", productData.name);
       formData.append("price", productData.price);
+      formData.append("originalPrice", productData.originalPrice)
       formData.append("categoryId", productData.categoryId);
       formData.append("stockQuantity", productData.stockQuantity);
       formData.append("manufacturer", productData.manufacturer);
@@ -183,6 +186,7 @@ const ProductManagement = () => {
       formData.append("weight", productData.weight);
       formData.append("box", productData.box);
       formData.append("accessory", productData.accessory)
+      formData.append("description",productData.description)
       const fetchData = async () => {
              try {
                  const response = await request.post(`/product/${productData.id}`,formData,{
@@ -412,6 +416,18 @@ const ProductManagement = () => {
             </div>
             <div>
               <label>
+                Giá gốc
+                <input
+                  type="number"
+                  name="originalPrice"
+                  value={productData.originalPrice}
+                  onChange={handleChange}
+                  style={{ width: "100%", marginBottom: "10px" }}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
                 Danh mục:
                 <select
                   name="nameCategory"
@@ -495,6 +511,19 @@ const ProductManagement = () => {
                   type="text"
                   name="accessory"
                   value={productData.accessory}
+                  onChange={handleChange}
+                  style={{ width: "100%", marginBottom: "10px" }}
+                />
+              </label>
+            </div>
+
+            <div>
+              <label>
+                Mô tả:
+                <input
+                  type="text"
+                  name="description"
+                  value={productData.description}
                   onChange={handleChange}
                   style={{ width: "100%", marginBottom: "10px" }}
                 />

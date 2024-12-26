@@ -9,7 +9,7 @@ const Offer = () => {
                 <h1>Exclusive</h1>
                 <h1>Offers For You</h1>
                 <p>ONLY ON BEST SELLERS PRODUCTS</p>
-                <button>Check now</button>
+                <a href="/san-pham"><button>Check now</button></a>
             </div>
             <div className="offers-right">
                 <img src={exculsive_image} alt="Exclusive Offer" />

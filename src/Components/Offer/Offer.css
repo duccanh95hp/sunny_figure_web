@@ -4,7 +4,7 @@
     height: auto;
     display: flex;
     flex-wrap: wrap;
-    margin: 50px auto; /* Giảm khoảng cách trên/dưới để tránh tràn */
+    /* margin: 50px auto; Giảm khoảng cách trên/dưới để tránh tràn */
     padding: 50px;
     background: linear-gradient(180deg, #fde1ff 0%, #e1ffea22 60%);
     border-radius: 20px;
@@ -12,10 +12,11 @@
     overflow: hidden;
     position: relative; /* Đảm bảo không bị đè lên thành phần khác */
     z-index: 1; /* Tăng ưu tiên hiển thị */
-    margin-top: 300px;
-    
+    margin-top: 250px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 
 .offers-left {
     flex: 1;
