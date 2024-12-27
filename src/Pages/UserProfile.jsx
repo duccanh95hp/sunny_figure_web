@@ -208,8 +208,8 @@ const UserProfile = () => {
             label="Điện thoại"
             name="telephone"
             rules={[
-              { required: true, message: "Phone is required" },
-              { pattern: /^\d+$/, message: "Phone must be numbers only" },
+              { required: true, message: "Điện thoại là bắt buộc" },
+              { pattern: /^\d+$/, message: "Điện thoại chỉ chưa số" },
             ]}
           >
             <Input />
@@ -218,7 +218,7 @@ const UserProfile = () => {
           <Form.Item
             label="Địa chỉ"
             name="address"
-            rules={[{ required: true, message: "Address is required" }]}
+            rules={[{ required: true, message: "Địa chỉ là bắt buộc" }]}
           >
             <Input />
           </Form.Item>
@@ -226,7 +226,7 @@ const UserProfile = () => {
           <Form.Item
             label="Ngày sinh"
             name="birthday"
-            rules={[{ required: true, message: "Date of Birth is required" }]}
+            rules={[{ required: true, message: "Ngày sinh là bắt buộc" }]}
           >
             <DatePicker
               format="DD/MM/YYYY"
@@ -247,12 +247,12 @@ const UserProfile = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Save Changes
+              Lưu thay đổi
             </Button>
           </Form.Item>
         </Form>
       ) : (
-        <p>Loading user information...</p>
+        <p>Đang tải dữ liệu ....</p>
       )}
 
       <h2>Danh sách đơn hàng</h2>
@@ -304,17 +304,17 @@ const UserProfile = () => {
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item label="Status">
+              <Form.Item label="Trạng thái">
                 <Select
                   placeholder="Chọn trạng thái"
                   onChange={handleSelectChange}
                   value={searchFilters.status}
                   allowClear
                 >
-                  <Option value="COMPLETED">Completed</Option>
-                  <Option value="PROCESS">Processing</Option>
-                  <Option value="CANCEL">Cancelled</Option>
-                  <Option value="NEW">New</Option>
+                  <Option value="COMPLETED">COMPLETED</Option>
+                  <Option value="PROCESS">PROCESS</Option>
+                  <Option value="CANCEL">CANCEL</Option>
+                  <Option value="NEW">NEW</Option>
                 </Select>
               </Form.Item>
             </Col>

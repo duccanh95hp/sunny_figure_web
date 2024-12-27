@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./Login.css";
 import * as request from "../../utils/request";
@@ -91,9 +92,11 @@ const Login = () => {
       </form>
       <div className="register-footer">
         Chưa có tài khoản?{" "}
-        <a href="/register" className="register-login-link">
+        <Link to='/register'>
+        <span className="register-login-link">
           Đăng ký ngay
-        </a>
+        </span>
+        </Link>
       </div>
     </div>
   );

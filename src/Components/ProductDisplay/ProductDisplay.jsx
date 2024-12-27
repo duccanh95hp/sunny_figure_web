@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import './ProductDisplay.css'
 import star_icon from '../Assets/star_icon.png'
-import star_dull_icon from '../Assets/star_dull_icon.png'
 import { ShopContext } from "../../Context/ShopContext";
 import * as format from '../../utils/format'
 
@@ -55,7 +54,7 @@ const ProductDisplay = (props) => {
                    <span>Vỏ hộp kèm sản phẩm :</span> {product.box}
                 </div>
 
-                <p className="productdisplay-right-category"><span>Category : </span>{product.category.name}</p>
+                <p className="productdisplay-right-category"><span>Danh mục sản phẩm : </span>{product.category.name}</p>
                 <p className="productdisplay-right-category"><span>Chất liệu : </span>{product.manufacturer}</p>
 
                 <div className="productdisplay-right-description">

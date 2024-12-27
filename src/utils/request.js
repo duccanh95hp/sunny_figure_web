@@ -2,7 +2,7 @@ import axios from "axios";
 
 const request = axios.create({
     baseURL: '/api',
-    // baseURL: 'http://sunny-figure.pro.vn:8080',
+    // baseURL: 'http://sunny-figure.pro.vn/api',
     timeout: 50000
 })
 const addAuthorizationHeader = (option = {}) => {

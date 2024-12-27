@@ -34,7 +34,7 @@ const ContactPage = () => {
         <div className="contact-info">
           <h2>Thông tin liên hệ</h2>
           <p>📍 Địa chỉ: TT16-06, Khu đô thị Văn Phú, Hà Đông , Hà Nội</p>
-          <p>📧 Email: duccanhhptl@gmail.com</p>
+          <p>📧 Email: duccanh95hptl@gmail.com</p>
           <p>📞 Điện thoại: 0795345097</p>
           <iframe
             title="Google Maps"

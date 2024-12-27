@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./Register.css";
 import * as request from "../../utils/request";
@@ -104,9 +105,11 @@ const Register = () => {
       </form>
       <div className="register-footer">
         Đã có tài khoản?{" "}
-        <a href="/login" className="register-login-link">
+        <Link to='/login'>
+        <span className="register-login-link">
           Đăng nhập ngay
-        </a>
+        </span>
+        </Link>
       </div>
     </div>
   );
